@@ -1,12 +1,5 @@
 /*
-GAME RULES:
-
-- The game has 2 players, playing in rounds
-- In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score
-- BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn
-- The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
-- The first player to reach 100 points on GLOBAL score wins the game
-
+Current player must roll the dice and accumulate points to reach 100 to win, but if a 1 is rolled, they lose the points they achieved during the current round. To avoid taking that chance you can choose to "Hold" after your satisfied with your accumulated points, and end your turn. Thus keeping your points permenantly, but giving the second player a turn to do the same. It's a game of choice and luck, you may roll a 1 right away, or you may score a lot of points before choosing to hold!
 */
 
 var scores, roundScore, activePlayer, gamePlaying;
@@ -23,7 +16,9 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         var diceDOM = document.querySelector('.dice');
         diceDOM.style.display = 'block';
         diceDOM.src = 'http://zilartdesign.com/dice-' + dice + '.png';
-
+var audio = new Audio('http://zilartdesign.com/techno/dice.mp3');
+audio.play()
+      
 
         //3. Update the round score IF the rolled number was NOT a 1
         if (dice !== 1) {
@@ -31,8 +26,13 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
             roundScore += dice;
             document.querySelector('#current-' + activePlayer).textContent = roundScore;
         } else {
-            //Next player
+         
             nextPlayer();
+         var audio = new Audio('http://zilartdesign.com/techno/error.mp3');
+audio.play()
+          var diceDOM = document.querySelector('.dice');
+        diceDOM.style.display = 'block';
+        diceDOM.src = 'http://zilartdesign.com/dice-1.png'
         }
     }    
 });
@@ -41,15 +41,21 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
 document.querySelector('.btn-hold').addEventListener('click', function() {
     if (gamePlaying) {
         // Add CURRENT score to GLOBAL score
+       
         scores[activePlayer] += roundScore;
 
         // Update the UI
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
-
+var audio = new Audio('http://zilartdesign.com/techno/click.mp3');
+audio.play()
+      
         // Check if player won the game
         if (scores[activePlayer] >= 100) {
-            document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
-            document.querySelector('.dice').style.display = 'none';
+     var audio = new Audio('http://zilartdesign.com/techno/winner.mp3');
+audio.play()
+          document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
+ 
+  document.querySelector('.dice').style.display = 'none';
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
             document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
             gamePlaying = false;
@@ -85,7 +91,8 @@ function init() {
     activePlayer = 0;
     roundScore = 0;
     gamePlaying = true;
-    
+    var audio = new Audio('http://zilartdesign.com/techno/click.mp3');
+audio.play()
     document.querySelector('.dice').style.display = 'none';
 
     document.getElementById('score-0').textContent = '0';
